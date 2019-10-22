@@ -17,6 +17,12 @@ abstract class Rson {
     return RsonGenericInstantiatorRegistry.get(type)();
   }
 
+  static void initializeInstance(dynamic instance) {
+    if (instance.rsonInitialize != null) {
+      instance.rsonInitialize();
+    }
+  }
+
   static Object fromJson<T>(Object json, [Object instance]) =>
       fromJson0(json, T, instance);
 

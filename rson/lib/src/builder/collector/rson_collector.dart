@@ -23,8 +23,9 @@ class RsonCollector extends GeneratorForAnnotation<Serializable> {
       String path =
           UrlUtils.assetToPackageUrl(buildStep.inputId.uri).toString();
       String className = element.name;
-      List<RsonGenericTypeObject> genericTypeList = [];
       bool isGenericClass = element.typeParameters.isNotEmpty;
+      String genericString =
+          element.typeParameters.map((e) => e.name).join(",");
 
       // all fields
       List<FieldElement> fields = element.fields;
@@ -68,20 +69,26 @@ class RsonCollector extends GeneratorForAnnotation<Serializable> {
                 .computeConstantValue(),
           ).peek("name").stringValue;
         }
+
+        bool containsGeneric = element.typeParameters.any(
+          (e) => TypeUtils.separateAllTypeString(type).contains(e.name),
+        );
+
+        bool containsNoneListGeneric =
+            containsGeneric ? !TypeUtils.isListString(type) : false;
+
+        bool containsRawGeneric =
+            element.typeParameters.any((e) => e.name == type);
+
         var rsonSerializableField = RsonSerializableField(
           type: type,
           name: name,
           serializedName: serializedName,
+          containsGeneric: containsGeneric,
+          containsNoneListGeneric: containsNoneListGeneric,
+          containsRawGeneric: containsRawGeneric,
         );
         rsonSerializableClass.setters.add(rsonSerializableField);
-
-        // check is generic
-        if (type.contains("<") &&
-            element.typeParameters.every(
-              (e) => !TypeUtils.separateAllTypeString(type).contains(e.name),
-            )) {
-          genericTypeList.add(RsonGenericTypeObject(type));
-        }
       }
 
       return CacheUtils.encode(
@@ -89,7 +96,8 @@ class RsonCollector extends GeneratorForAnnotation<Serializable> {
           RsonSerializableFile(
             path: path,
             className: className,
-            genericTypeList: genericTypeList,
+            isGeneric: isGenericClass,
+            genericString: genericString,
             data: rsonSerializableClass,
           ),
         ),

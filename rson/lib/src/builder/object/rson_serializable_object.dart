@@ -3,11 +3,15 @@ import 'package:rson/src/builder/object/rson_generic_type_object.dart';
 class RsonSerializableFile {
   final String path;
   final String className;
+  final bool isGeneric;
+  final String genericString;
   final List<RsonGenericTypeObject> genericTypeList;
   final RsonSerializableClass data;
   RsonSerializableFile({
     this.path,
     this.className,
+    this.isGeneric,
+    this.genericString,
     this.genericTypeList,
     this.data,
   });
@@ -16,6 +20,8 @@ class RsonSerializableFile {
     return {
       "path": path,
       "className": className,
+      "isGeneric": isGeneric,
+      "genericString": genericString,
       "genericTypeList": genericTypeList,
       "data": data,
     };
@@ -45,11 +51,17 @@ class RsonSerializableField {
   String type;
   String name;
   String serializedName;
+  bool containsGeneric;
+  bool containsNoneListGeneric;
+  bool containsRawGeneric;
 
   RsonSerializableField({
     this.type,
     this.name,
     this.serializedName,
+    this.containsGeneric = false,
+    this.containsNoneListGeneric = false,
+    this.containsRawGeneric = false,
   });
 
   Map toJson() {
@@ -57,6 +69,9 @@ class RsonSerializableField {
       "type": type,
       "name": name,
       "serializedName": serializedName,
+      "containsGeneric": containsGeneric,
+      "containsNoneListGeneric": containsNoneListGeneric,
+      "containsRawGeneric": containsRawGeneric,
     };
   }
 
@@ -65,6 +80,9 @@ class RsonSerializableField {
     instance.type = json['type'];
     instance.name = json['name'];
     instance.serializedName = json['serializedName'];
+    instance.containsGeneric = json['containsGeneric'];
+    instance.containsNoneListGeneric = json['containsNoneListGeneric'];
+    instance.containsRawGeneric = json['containsRawGeneric'];
     return instance;
   }
 }

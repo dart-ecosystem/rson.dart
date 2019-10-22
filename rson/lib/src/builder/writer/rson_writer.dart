@@ -5,11 +5,8 @@ import 'package:build/build.dart';
 import 'package:glob/glob.dart';
 import 'package:mustache/mustache.dart';
 import 'package:rson/rson.dart';
-import 'package:rson/src/annotation/ignore.dart';
-import 'package:rson/src/builder/object/rson_serializable_object.dart';
 import 'package:rson/src/builder/template/rson_template.dart';
 import 'package:rson/src/builder/utils/cache_utils.dart';
-import 'package:rson/src/builder/utils/field_utils.dart';
 import 'package:source_gen/source_gen.dart';
 
 class RsonWriter extends GeneratorForAnnotation<EnableRson> {
@@ -51,7 +48,7 @@ class RsonWriter extends GeneratorForAnnotation<EnableRson> {
         .map((e) => e.first)
         .map((e) => json.decode(e))
         .fold<List>([], (prv, cur) => prv..addAll(cur))
-        .map((e) => {"name": e})
+        .map((e) => {"name": e, "isGeneric": !TypeUtils.isListString(e)})
         .toList();
 
     return Template(rson_template).renderString({
@@ -60,11 +57,3 @@ class RsonWriter extends GeneratorForAnnotation<EnableRson> {
     });
   }
 }
-
-Uri assetToPackageUrl(Uri url) =>
-    url.pathSegments.isNotEmpty && url.pathSegments[1] == 'lib'
-        ? url.replace(
-            scheme: 'package',
-            pathSegments: [url.pathSegments.first]
-              ..addAll(url.pathSegments.skip(2)))
-        : url;

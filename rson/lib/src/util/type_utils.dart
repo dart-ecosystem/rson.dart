@@ -33,6 +33,10 @@ abstract class TypeUtils {
     return type == List || type.toString().startsWith("List<");
   }
 
+  static bool isListString(String typeString) {
+    return typeString == 'List' || typeString.startsWith("List<");
+  }
+
   static Type getSubtype(Type type) {
     String subtypeName = getSecondLevelTypeStrings(type.toString()).first;
     return RsonStringTypeRegistry.get(subtypeName);
