@@ -25,7 +25,7 @@ void main() {
 3. Deserialization
 ```dart
 void main() {
-  Rson.fromJson<Entity>({"a": 1});
-  print(Rson.a); // output: 1
+  var entity = Rson.fromJson<Entity>({"a": 1});
+  print(entity.a); // output: 1
 }
 ```
