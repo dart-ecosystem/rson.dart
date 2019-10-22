@@ -1,5 +1,5 @@
-import 'package:test/test.dart';
 import 'package:rson/src/convertor/double_convertor.dart';
+import 'package:test/test.dart';
 
 void main() {
   group("Double Convertor Test", () {
