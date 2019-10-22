@@ -1,55 +1,47 @@
-import 'package:demo/entity.dart';
-import 'package:demo/generic_entity.dart';
+import 'package:demo/entity/nested_entity.dart';
 import 'package:demo/main.rson.g.dart';
 import 'package:rson/rson.dart';
 
-import 'a.dart';
-import 'b.dart';
-import 'c.dart';
+import 'entity/deep_nested_entity.dart';
+import 'entity/entity.dart';
 
 @EnableRson()
 class Entry {}
 
 void main() {
   initializeRson();
-//  Entity res = Rson.fromJson<Entity>({
-//    "a": 1,
-//    "b": 1.1,
-//    "c": 1.9,
-//    "d": "str",
-//    "e": "obj",
-//    "g2": <dynamic>[1.2],
-//    "h": {
-//      "a": 2,
-//    },
-//    "i": [
-//      {
-//        "a": 3,
-//      },
-//      {
-//        "a": 4,
-//      },
-//    ],
-//    "j": {
-//      "a": 5,
-//    },
-//  });
-//  print(res?.i?.first?.a);
-//  print(Rson.toJson(res));
+  Entity entity = Rson.fromJson<Entity>({
+    "data": 1,
+    "data2": 2.0,
+    "data3": 3.0,
+    "data4": "str",
+    "data5": true,
+    "data6": ["1", "2", "3"],
+  });
+  print(entity.data6);
+  NestedEntity nestedEntity = Rson.fromJson<NestedEntity>({
+    "entity": {
+      "data": 1,
+      "data2": 2.0,
+      "data3": 3.0,
+      "data4": "str",
+      "data5": true,
+      "data6": ["1", "2", "3"],
+    },
+  });
+  print(nestedEntity.entity.data6);
 
-  A<C<double>> entity = Rson.fromJson<A<C<double>>>({
-    "value": 1,
-    "data": {
-      "data": {
-        "data": [1.0, 2.0],
+  DeepNestedEntity deepNestedEntity = Rson.fromJson<DeepNestedEntity>({
+    "nestedEntity": {
+      "entity": {
+        "data": 1,
+        "data2": 2.0,
+        "data3": 3.0,
+        "data4": "str",
+        "data5": true,
+        "data6": ["1", "2", "3"],
       },
     },
   });
-
-  print("=====");
-  print(entity);
-  print(entity.value);
-  print(entity.data.data.data);
-  print(Rson.toJson(entity));
-  print("=====");
+  print(deepNestedEntity.nestedEntity.entity.data6);
 }

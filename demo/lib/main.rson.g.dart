@@ -5,114 +5,116 @@
 // **************************************************************************
 
 import "package:rson/rson.dart";
-import "package:demo/entity2.dart";
-import "package:demo/c.dart";
-import "package:demo/b.dart";
-import "package:demo/a.dart";
+import "package:demo/entity/nested_entity.dart";
+import "package:demo/entity/entity.dart";
+import "package:demo/entity/deep_nested_entity.dart";
+import "package:demo/entity/generic_entity.dart";
 
 void initializeRson() {
   RsonSerializerRegistry.load({
-    // Entity2
-    Entity2: RsonSerializerObject(
+    // NestedEntity
+    NestedEntity: RsonSerializerObject(
       (Object entity) {
         Map<String, Object> json = {};
-        json['a'] = Rson.toObject((entity as Entity2).a);
+        json['entity'] = Rson.toObject((entity as NestedEntity).entity);
         return json;
       },
       (Type type, Map json, [dynamic entity]) {
-        entity ??= Rson.createInstance(Entity2);
-        Rson.initializeInstance(entity);
-        entity.a = Rson.fromJson0(json['a'], type, entity.a);
+        entity ??= Rson.createInstance(NestedEntity);
+        entity.entity = _fj0(json['entity'], _t<Entity>(), entity.entity);
         return entity;
       },
     ),
-    // C
-    C: RsonSerializerObject(
+    // Entity
+    Entity: RsonSerializerObject(
       (Object entity) {
         Map<String, Object> json = {};
-        json['data'] = Rson.toObject((entity as C).data);
+        json['data'] = Rson.toObject((entity as Entity).data);
+        json['data2'] = Rson.toObject((entity as Entity).data2);
+        json['data3'] = Rson.toObject((entity as Entity).data3);
+        json['data4'] = Rson.toObject((entity as Entity).data4);
+        json['data5'] = Rson.toObject((entity as Entity).data5);
+        json['data6'] = Rson.toObject((entity as Entity).data6);
         return json;
       },
       (Type type, Map json, [dynamic entity]) {
-        entity ??= Rson.createInstance(C);
-        Rson.initializeInstance(entity);
-        entity.data = Rson.fromJson0(json['data'], type, entity.data);
+        entity ??= Rson.createInstance(Entity);
+        entity.data = _fj0(json['data'], _t<int>(), entity.data);
+        entity.data2 = _fj0(json['data2'], _t<num>(), entity.data2);
+        entity.data3 = _fj0(json['data3'], _t<double>(), entity.data3);
+        entity.data4 = _fj0(json['data4'], _t<String>(), entity.data4);
+        entity.data5 = _fj0(json['data5'], _t<bool>(), entity.data5);
+        entity.data6 = _fj0(json['data6'], _t<List<String>>(), entity.data6);
         return entity;
       },
     ),
-    // B
-    B: RsonSerializerObject(
+    // DeepNestedEntity
+    DeepNestedEntity: RsonSerializerObject(
       (Object entity) {
         Map<String, Object> json = {};
-        json['data'] = Rson.toObject((entity as B).data);
+        json['nestedEntity'] =
+            Rson.toObject((entity as DeepNestedEntity).nestedEntity);
         return json;
       },
       (Type type, Map json, [dynamic entity]) {
-        entity ??= Rson.createInstance(B);
-        Rson.initializeInstance(entity);
-        entity.data = Rson.fromJson0(json['data'], type, entity.data);
+        entity ??= Rson.createInstance(DeepNestedEntity);
+        entity.nestedEntity =
+            _fj0(json['nestedEntity'], _t<NestedEntity>(), entity.nestedEntity);
         return entity;
       },
     ),
-    // A
-    A: RsonSerializerObject(
+    // GenericEntity
+    GenericEntity: RsonSerializerObject(
       (Object entity) {
         Map<String, Object> json = {};
-        json['value'] = Rson.toObject((entity as A).value);
-        json['data'] = Rson.toObject((entity as A).data);
+        json['data'] = Rson.toObject((entity as GenericEntity).data);
         return json;
       },
       (Type type, Map json, [dynamic entity]) {
-        entity ??= Rson.createInstance(A);
+        entity ??= Rson.createInstance(GenericEntity);
         Rson.initializeInstance(entity);
-        entity.value = Rson.fromJson0(json['value'], type, entity.value);
-        entity.data = Rson.fromJson0(json['data'], type, entity.data);
         return entity;
       },
     ),
   });
 
   RsonGenericInstantiatorRegistry.load({
-    // Entity2
-    t2s<Entity2>(): () => Entity2(),
-    // C
-    t2s<C>(): () => _Rson_C(),
-    // B
-    t2s<B>(): () => _Rson_B(),
-    // A
-    t2s<A>(): () => _Rson_A(),
+    // All Class
+    // NestedEntity
+    _ts<NestedEntity>(): () => NestedEntity(),
+    // Entity
+    _ts<Entity>(): () => Entity(),
+    // DeepNestedEntity
+    _ts<DeepNestedEntity>(): () => DeepNestedEntity(),
+    // GenericEntity
+    _ts<GenericEntity>(): () => _Rson_GenericEntity(),
+
+    // All Field Types
+    _ts<List<String>>(): () => List<String>(),
+
     // All Generic Usage
-    t2s<A<C<double>>>(): () => _Rson_A<C<double>>(),
-    t2s<C<double>>(): () => _Rson_C<double>(),
   });
 
   RsonStringTypeRegistry.load({
-    "Entity2": Entity2,
-    "C": C,
-    "B": B,
-    "A": A,
-    "_Rson_C": C,
-    "_Rson_B": B,
-    "_Rson_A": A,
+    "int": int,
+    "num": num,
+    "double": double,
+    "bool": bool,
+    "String": String,
+    "NestedEntity": NestedEntity,
+    "Entity": Entity,
+    "DeepNestedEntity": DeepNestedEntity,
+    "GenericEntity": GenericEntity,
+    "_Rson_GenericEntity": GenericEntity,
   });
 }
 
-String t2s<T>() => T.toString();
+String _ts<T>() => T.toString();
+Type _t<T>() => T;
+var _fj0 = Rson.fromJson0;
 
-class _Rson_C<T> extends C<T> {
-  rsonInitialize() {
-    this.data = List<T>();
-  }
-}
-
-class _Rson_B<T> extends B<T> {
+class _Rson_GenericEntity<T> extends GenericEntity<T> {
   rsonInitialize() {
     this.data = Rson.createInstance(T);
-  }
-}
-
-class _Rson_A<T> extends A<T> {
-  rsonInitialize() {
-    this.data = _Rson_B<T>();
   }
 }

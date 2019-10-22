@@ -1,6 +1,6 @@
 import 'package:rson/rson.dart';
 
 @Serializable()
-class Entity2 {
-  int a;
+class GenericEntity<T> {
+  T data;
 }
