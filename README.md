@@ -1,6 +1,11 @@
 # Rson
 A Dart serialization/deserialization library to convert Dart Objects into JSON and back
 
+# Important Notice
+1. One serializable class per file.
+2. No duplicated serializable class name.
+3. Do NOT pass generic type to Rson.fromJson;
+
 # Usage
 
 1. Setup a serializable class by decorating with @Serializable()
