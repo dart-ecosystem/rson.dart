@@ -1,7 +1,7 @@
 name: rson
 description: >
   A Dart serialization/deserialization library to convert Dart Objects into JSON and back.
-version: 0.0.3
+version: 0.0.4
 homepage: https://github.com/copydog/rson.dart
 author: copydog <775150@qq.com>
 

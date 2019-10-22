@@ -22,10 +22,12 @@ void initializeRson() {
       },
       (Type type, Map json, [dynamic entity]) {
         entity ??= Rson.createInstance({{{className}}});
+        {{# isGeneric }}
         Rson.initializeInstance(entity);
+        {{/ isGeneric }}
         {{# data}}
         {{# getters }}
-        entity.{{{name}}} = Rson.fromJson0(json['{{{serializedName}}}'], type, entity.{{{name}}});
+        entity.{{{name}}} = _fj0(json['{{{serializedName}}}'], _t<{{{type}}}>(), entity.{{{name}}});
         {{/ getters }}
         {{/ data}}
         return entity;
@@ -35,27 +37,41 @@ void initializeRson() {
   });
   
   RsonGenericInstantiatorRegistry.load({
+    // All Class
     {{# entities }}
     // {{{className}}}
     {{# isGeneric }}
-    t2s<{{{className}}}>(): () => _Rson_{{{className}}}(),
+    _ts<{{{className}}}>(): () => _Rson_{{{className}}}(),
     {{/ isGeneric }}
     {{^ isGeneric }}
-    t2s<{{{className}}}>(): () => {{{className}}}(),
+    _ts<{{{className}}}>(): () => {{{className}}}(),
     {{/ isGeneric }}
     {{/ entities }}
+    
+    // All Field Types
+    {{# entities }}
+    {{# genericTypeList }}
+    _ts<{{{name}}}>(): () => {{{name}}}(),
+    {{/ genericTypeList }}
+    {{/ entities }}
+    
     // All Generic Usage
     {{# genericUsages }}
     {{# isGeneric }}
-    t2s<{{{name}}}>(): () => _Rson_{{{name}}}(),
+    _ts<{{{name}}}>(): () => _Rson_{{{name}}}(),
     {{/ isGeneric }}
     {{^ isGeneric }}
-    t2s<{{{name}}}>(): () => {{{name}}}(),
+    _ts<{{{name}}}>(): () => {{{name}}}(),
     {{/ isGeneric }}
     {{/ genericUsages }}
   });
   
   RsonStringTypeRegistry.load({
+    "int": int,
+    "num": num,
+    "double": double,
+    "bool": bool,
+    "String": String,
     {{# entities }}
     "{{{className}}}": {{{className}}},
     {{/ entities }}
@@ -67,7 +83,9 @@ void initializeRson() {
   });
 }
 
-String t2s<T>() => T.toString();
+String _ts<T>() => T.toString();
+Type _t<T>() => T;
+var _fj0 = Rson.fromJson0;
 
 {{# entities }}
 {{# isGeneric }}

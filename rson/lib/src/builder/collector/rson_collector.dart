@@ -4,6 +4,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:rson/rson.dart';
 import 'package:rson/src/annotation/ignore.dart';
+import 'package:rson/src/builder/object/rson_generic_type_object.dart';
 import 'package:rson/src/builder/object/rson_serializable_object.dart';
 import 'package:rson/src/builder/utils/cache_utils.dart';
 import 'package:rson/src/builder/utils/field_utils.dart';
@@ -25,6 +26,7 @@ class RsonCollector extends GeneratorForAnnotation<Serializable> {
       bool isGenericClass = element.typeParameters.isNotEmpty;
       String genericString =
           element.typeParameters.map((e) => e.name).join(",");
+      List<RsonGenericTypeObject> genericTypeList = [];
 
       // all fields
       List<FieldElement> fields = element.fields;
@@ -73,6 +75,10 @@ class RsonCollector extends GeneratorForAnnotation<Serializable> {
           (e) => TypeUtils.separateAllTypeString(type).contains(e.name),
         );
 
+        if (TypeUtils.isGenericString(type) && !containsGeneric) {
+          genericTypeList.add(RsonGenericTypeObject(type));
+        }
+
         bool containsNoneListGeneric =
             containsGeneric ? !TypeUtils.isListString(type) : false;
 
@@ -97,6 +103,7 @@ class RsonCollector extends GeneratorForAnnotation<Serializable> {
             className: className,
             isGeneric: isGenericClass,
             genericString: genericString,
+            genericTypeList: genericTypeList,
             data: rsonSerializableClass,
           ),
         ),
