@@ -50,6 +50,6 @@ void main() {
   print(entity);
   print(entity.value);
   print(entity.data.data.data);
+  print(Rson.toJson(entity));
   print("=====");
-//  print(entity?);
 }

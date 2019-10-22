@@ -4,9 +4,9 @@ import 'package:rson/rson.dart';
 class B<T> {
   T data;
 
-  void rsonInitialize() {
-    this.data = Rson.createInstance(T);
-  }
+//  void rsonInitialize() {
+//    this.data = Rson.createInstance(T);
+//  }
 }
 
 // B.rsonCreate<int>()

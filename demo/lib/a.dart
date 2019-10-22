@@ -8,8 +8,4 @@ import 'c.dart';
 class A<T extends Object> {
   int value;
   B<T> data;
-
-  void rsonInitialize() {
-    this.data = B<T>();
-  }
 }
