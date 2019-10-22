@@ -1,7 +1,5 @@
-import 'package:meta/meta.dart';
 import 'package:rson/rson.dart';
 
-@sealed
 abstract class TypeUtils {
   static isPrimitive(Object instance) {
     return instance is int ||
