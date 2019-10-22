@@ -6,9 +6,9 @@
 
 import "package:rson/rson.dart";
 import "package:demo/entity/nested_entity.dart";
+import "package:demo/entity/generic_entity.dart";
 import "package:demo/entity/entity.dart";
 import "package:demo/entity/deep_nested_entity.dart";
-import "package:demo/entity/generic_entity.dart";
 
 void initializeRson() {
   RsonSerializerRegistry.load({
@@ -21,7 +21,22 @@ void initializeRson() {
       },
       (Type type, Map json, [dynamic entity]) {
         entity ??= Rson.createInstance(NestedEntity);
+        // false
         entity.entity = _fj0(json['entity'], _t<Entity>(), entity.entity);
+        return entity;
+      },
+    ),
+    // GenericEntity
+    GenericEntity: RsonSerializerObject(
+      (Object entity) {
+        Map<String, Object> json = {};
+        json['data'] = Rson.toObject((entity as GenericEntity).data);
+        return json;
+      },
+      (Type type, Map json, [dynamic entity]) {
+        entity ??= Rson.createInstance(GenericEntity);
+        Rson.initializeInstance(entity);
+        // true
         return entity;
       },
     ),
@@ -39,11 +54,17 @@ void initializeRson() {
       },
       (Type type, Map json, [dynamic entity]) {
         entity ??= Rson.createInstance(Entity);
+        // false
         entity.data = _fj0(json['data'], _t<int>(), entity.data);
+        // false
         entity.data2 = _fj0(json['data2'], _t<num>(), entity.data2);
+        // false
         entity.data3 = _fj0(json['data3'], _t<double>(), entity.data3);
+        // false
         entity.data4 = _fj0(json['data4'], _t<String>(), entity.data4);
+        // false
         entity.data5 = _fj0(json['data5'], _t<bool>(), entity.data5);
+        // false
         entity.data6 = _fj0(json['data6'], _t<List<String>>(), entity.data6);
         return entity;
       },
@@ -58,21 +79,9 @@ void initializeRson() {
       },
       (Type type, Map json, [dynamic entity]) {
         entity ??= Rson.createInstance(DeepNestedEntity);
+        // false
         entity.nestedEntity =
             _fj0(json['nestedEntity'], _t<NestedEntity>(), entity.nestedEntity);
-        return entity;
-      },
-    ),
-    // GenericEntity
-    GenericEntity: RsonSerializerObject(
-      (Object entity) {
-        Map<String, Object> json = {};
-        json['data'] = Rson.toObject((entity as GenericEntity).data);
-        return json;
-      },
-      (Type type, Map json, [dynamic entity]) {
-        entity ??= Rson.createInstance(GenericEntity);
-        Rson.initializeInstance(entity);
         return entity;
       },
     ),
@@ -82,12 +91,12 @@ void initializeRson() {
     // All Class
     // NestedEntity
     _ts<NestedEntity>(): () => NestedEntity(),
+    // GenericEntity
+    _ts<GenericEntity>(): () => _Rson_GenericEntity(),
     // Entity
     _ts<Entity>(): () => Entity(),
     // DeepNestedEntity
     _ts<DeepNestedEntity>(): () => DeepNestedEntity(),
-    // GenericEntity
-    _ts<GenericEntity>(): () => _Rson_GenericEntity(),
 
     // All Field Types
     _ts<List<String>>(): () => List<String>(),
@@ -102,9 +111,9 @@ void initializeRson() {
     "bool": bool,
     "String": String,
     "NestedEntity": NestedEntity,
+    "GenericEntity": GenericEntity,
     "Entity": Entity,
     "DeepNestedEntity": DeepNestedEntity,
-    "GenericEntity": GenericEntity,
     "_Rson_GenericEntity": GenericEntity,
   });
 }

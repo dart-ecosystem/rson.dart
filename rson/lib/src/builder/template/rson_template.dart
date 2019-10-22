@@ -26,9 +26,11 @@ void initializeRson() {
         Rson.initializeInstance(entity);
         {{/ isGeneric }}
         {{# data}}
-        {{# getters }}
+        {{# setters }}
+        {{^containsGeneric}}
         entity.{{{name}}} = _fj0(json['{{{serializedName}}}'], _t<{{{type}}}>(), entity.{{{name}}});
-        {{/ getters }}
+        {{/containsGeneric}}
+        {{/ setters }}
         {{/ data}}
         return entity;
       },

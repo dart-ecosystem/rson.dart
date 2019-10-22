@@ -71,27 +71,27 @@ class RsonCollector extends GeneratorForAnnotation<Serializable> {
           ).peek("name").stringValue;
         }
 
-        bool containsGeneric = element.typeParameters.any(
+        bool containsGenericType = element.typeParameters.any(
           (e) => TypeUtils.separateAllTypeString(type).contains(e.name),
         );
 
-        if (TypeUtils.isGenericString(type) && !containsGeneric) {
+        if (TypeUtils.isGenericString(type) && !containsGenericType) {
           genericTypeList.add(RsonGenericTypeObject(type));
         }
 
         bool containsNoneListGeneric =
-            containsGeneric ? !TypeUtils.isListString(type) : false;
+            containsGenericType ? !TypeUtils.isListString(type) : false;
 
-        bool containsRawGeneric =
+        bool containsRawGenericType =
             element.typeParameters.any((e) => e.name == type);
 
         var rsonSerializableField = RsonSerializableField(
           type: type,
           name: name,
           serializedName: serializedName,
-          containsGeneric: containsGeneric,
+          containsGeneric: containsGenericType || containsRawGenericType,
           containsNoneListGeneric: containsNoneListGeneric,
-          containsRawGeneric: containsRawGeneric,
+          containsRawGeneric: containsRawGenericType,
         );
         rsonSerializableClass.setters.add(rsonSerializableField);
       }
