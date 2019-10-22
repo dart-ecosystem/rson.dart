@@ -56,7 +56,12 @@ void initializeRson() {
     // All Field Types
     {{# entities }}
     {{# genericTypeList }}
+    {{# isList }}
     _ts<{{{name}}}>(): () => {{{name}}}(),
+    {{/ isList }}
+    {{^ isList }}
+    _ts<{{{name}}}>(): () => _Rson_{{{name}}}(),
+    {{/ isList }}
     {{/ genericTypeList }}
     {{/ entities }}
     

@@ -26,6 +26,9 @@ class RsonCollector extends GeneratorForAnnotation<Serializable> {
       bool isGenericClass = element.typeParameters.isNotEmpty;
       String genericString =
           element.typeParameters.map((e) => e.name).join(",");
+      if (genericString != '') {
+        genericString = "<$genericString>";
+      }
       List<RsonGenericTypeObject> genericTypeList = [];
 
       // all fields
@@ -75,8 +78,10 @@ class RsonCollector extends GeneratorForAnnotation<Serializable> {
           (e) => TypeUtils.separateAllTypeString(type).contains(e.name),
         );
 
+        bool isListGenericType = TypeUtils.isListString(type);
+
         if (TypeUtils.isGenericString(type) && !containsGenericType) {
-          genericTypeList.add(RsonGenericTypeObject(type));
+          genericTypeList.add(RsonGenericTypeObject(type, isListGenericType));
         }
 
         bool containsNoneListGeneric =

@@ -1,20 +1,22 @@
 const String rson_generic_subclass_template = '''
-class _Rson_{{{className}}}<{{{genericString}}}> extends {{{className}}}<{{{genericString}}}> {
+class _Rson_{{{className}}}{{{genericString}}} extends {{{className}}}{{{genericString}}} {
   rsonInitialize() {
     {{# data }}
-    {{# setters }}
-    {{# containsRawGeneric }}
+      {{# setters }}
+        {{# containsGeneric }}
+          {{# containsRawGeneric }}
     this.{{{name}}} = Rson.createInstance({{{type}}});
-    {{/ containsRawGeneric }}
-    {{^ containsRawGeneric }}
-    {{# containsNoneListGeneric }}
+          {{/ containsRawGeneric }}
+          {{^ containsRawGeneric }}
+            {{# containsNoneListGeneric }}
     this.{{{name}}} = _Rson_{{{type}}}();
-    {{/ containsNoneListGeneric }}
-    {{^ containsNoneListGeneric }}
+            {{/ containsNoneListGeneric }}
+            {{^ containsNoneListGeneric }}
     this.{{{name}}} = {{{type}}}();
-    {{/ containsNoneListGeneric }}
-    {{/ containsRawGeneric }}
-    {{/ setters }}
+            {{/ containsNoneListGeneric }}
+          {{/ containsRawGeneric }}
+        {{/ containsGeneric }}
+      {{/ setters }}
     {{/ data }}
   }
 }
