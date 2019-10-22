@@ -3,19 +3,17 @@ class _Rson_{{{className}}}<{{{genericString}}}> extends {{{className}}}<{{{gene
   rsonInitialize() {
     {{# data }}
     {{# setters }}
-    {{# containsGeneric }}
     {{# containsRawGeneric }}
-    this.data = Rson.createInstance({{{type}}});
+    this.{{{name}}} = Rson.createInstance({{{type}}});
     {{/ containsRawGeneric }}
     {{^ containsRawGeneric }}
     {{# containsNoneListGeneric }}
-    this.data = _Rson_{{{type}}}();
+    this.{{{name}}} = _Rson_{{{type}}}();
     {{/ containsNoneListGeneric }}
     {{^ containsNoneListGeneric }}
-    this.data = {{{type}}}();
+    this.{{{name}}} = {{{type}}}();
     {{/ containsNoneListGeneric }}
     {{/ containsRawGeneric }}
-    {{/ containsGeneric }}
     {{/ setters }}
     {{/ data }}
   }

@@ -89,7 +89,7 @@ class RsonCollector extends GeneratorForAnnotation<Serializable> {
           type: type,
           name: name,
           serializedName: serializedName,
-          containsGeneric: containsGenericType || containsRawGenericType,
+          containsGeneric: containsGenericType,
           containsNoneListGeneric: containsNoneListGeneric,
           containsRawGeneric: containsRawGenericType,
         );

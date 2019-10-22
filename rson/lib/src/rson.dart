@@ -14,6 +14,10 @@ abstract class Rson {
       return null;
     }
 
+//    if (!RsonGenericInstantiatorRegistry.has(type)) {
+//      throw new RsonExcep
+//    }
+
     return RsonGenericInstantiatorRegistry.get(type)();
   }
 

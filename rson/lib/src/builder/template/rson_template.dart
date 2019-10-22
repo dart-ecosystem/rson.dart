@@ -11,28 +11,31 @@ void initializeRson() {
     {{# entities }}
     // {{{className}}}
     {{{className}}}: RsonSerializerObject(
-      (Object entity) {
-        Map<String, Object> json = {};
+      (Object e) {
+        Map<String, Object> j = {};
         {{# data}}
         {{# getters }}
-        json['{{{serializedName}}}'] = Rson.toObject((entity as {{{className}}}).{{{name}}});
+        j['{{{serializedName}}}'] = _to((e as {{{className}}}).{{{name}}});
         {{/ getters }}
         {{/ data}}
-        return json;
+        return j;
       },
-      (Type type, Map json, [dynamic entity]) {
-        entity ??= Rson.createInstance({{{className}}});
+      (Type t, Map j, [dynamic e]) {
+        e ??= _ci({{{className}}});
         {{# isGeneric }}
-        Rson.initializeInstance(entity);
+        _ii(e);
         {{/ isGeneric }}
         {{# data}}
         {{# setters }}
+        {{#containsGeneric}}
+        e.{{{name}}} = _fj0(j['{{{serializedName}}}'], null, e.{{{name}}});
+        {{/containsGeneric}}
         {{^containsGeneric}}
-        entity.{{{name}}} = _fj0(json['{{{serializedName}}}'], _t<{{{type}}}>(), entity.{{{name}}});
+        e.{{{name}}} = _fj0(j['{{{serializedName}}}'], _t<{{{type}}}>(), e.{{{name}}});
         {{/containsGeneric}}
         {{/ setters }}
         {{/ data}}
-        return entity;
+        return e;
       },
     ),
     {{/ entities }}
@@ -88,6 +91,9 @@ void initializeRson() {
 String _ts<T>() => T.toString();
 Type _t<T>() => T;
 var _fj0 = Rson.fromJson0;
+var _ii= Rson.initializeInstance;
+var _ci= Rson.createInstance;
+var _to= Rson.toObject;
 
 {{# entities }}
 {{# isGeneric }}
