@@ -1,0 +1,30 @@
+# Read about `build.yaml` at https://pub.dartlang.org/packages/build_config
+targets:
+  $default:
+    builders:
+      rson|collector:
+        enabled: true
+        generate_for:
+          exclude: ['**.g.dart', '*.rua_internal.dart', 'lib/generated/**']
+
+builders:
+  collector:
+    import: 'package:rson/src/builder/builder.dart'
+    builder_factories: ['collector']
+    build_extensions: { '.dart': ['.rson_cache.dart'] }
+    auto_apply: dependents
+    build_to: cache
+    runs_before: ['rson|writer']
+  usage_collector:
+    import: 'package:rson/src/builder/builder.dart'
+    builder_factories: ['usageCollector']
+    build_extensions: { '.dart': ['.rson_usage_cache.dart'] }
+    auto_apply: dependents
+    build_to: cache
+    runs_before: ['rson|writer']
+  writer:
+    import: 'package:rson/src/builder/builder.dart'
+    builder_factories: ['writer']
+    build_extensions: { '.dart': ['.rson.g.dart'] }
+    auto_apply: dependents
+    build_to: source

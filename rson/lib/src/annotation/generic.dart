@@ -1,0 +1,3 @@
+class Generic {
+  const Generic();
+}

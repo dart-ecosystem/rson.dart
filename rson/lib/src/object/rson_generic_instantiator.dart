@@ -1,0 +1,1 @@
+typedef T RsonGenericInstantiator<T>();
